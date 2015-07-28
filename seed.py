@@ -60,8 +60,8 @@ def load_ratings():
 if __name__ == "__main__":
     connect_to_db(app)
 
-    # load_users()
-    # load_movies()
+    load_users()
+    load_movies()
     load_ratings()
 
 
