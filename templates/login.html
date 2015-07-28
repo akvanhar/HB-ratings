@@ -1,0 +1,19 @@
+{% extends 'base.html'%}
+{% block content %}
+<form action='/login_portal' method='post'>
+    <label>Email:
+        <input type='text' name='email'>
+    </label>
+    <br>
+    <label>Password:
+        <input type='text' name='password'>
+    </label>
+    <br>
+    <input type='submit' value='Login'>
+</form>
+{% for message in get_flashed_messages() %}
+    {{message}}
+{% endfor %}
+
+
+{% endblock %}
