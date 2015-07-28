@@ -10,14 +10,12 @@ def load_users():
     user_file = open('seed_data/u.user')
     for line in user_file:
         line = line.rstrip()
-        user_id, email, password, age, zipcode = line.split("|")
-        the_user = User(user_id=user_id, 
-                        email=email, 
-                        password=password, 
+        user_id, age, gender, occupation, zipcode = line.split("|")
+        the_user = User(user_id=user_id,  
                         age=age, 
                         zipcode=zipcode)
         db.session.add(the_user)
-        db.session.commit()
+    db.session.commit()
 
 
 def load_movies():
@@ -32,6 +30,7 @@ def load_movies():
             movie_id = movie_info[0]
             title = movie_info[1][:-6]
             title = title.decode("latin-1")
+            title = title.rstrip()
             date = movie_info[2]
             released_at = datetime.strptime(date, "%d-%b-%Y")
             imdb_url = movie_info[4]
@@ -40,7 +39,7 @@ def load_movies():
                               released_at=released_at, 
                               imdb_url=imdb_url)
             db.session.add(the_movie)
-            db.session.commit()
+    db.session.commit()
 
 def load_ratings():
     """Load ratings from u.data into database."""
@@ -61,8 +60,8 @@ if __name__ == "__main__":
     connect_to_db(app)
 
     load_users()
-    load_movies()
-    load_ratings()
+    # load_movies()
+    # load_ratings()
 
 
 # from datetime import datetime
