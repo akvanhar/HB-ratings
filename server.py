@@ -41,10 +41,23 @@ def login_portal():
         user_id = user.user_id
         session['user_id']=user_id
         flash('Login successful!')
-        return redirect('/')
+        return redirect('/users/'+ str(user_id))
     else:
-        flash('Login NOT successful! Please try again.')
-        return redirect('/login')
+        flash('Login NOT successful!')
+        return redirect('/')
+        #When we need to authenticate, we'll have to fix this
+        #redirect to sign up page
+        #have sign up page add user to database
+        #then redirect back to login page
+
+@app.route('/logbutton')
+def logbutton():
+    """You get here if you click the login/logout button from any page other than login"""
+    if 'user_id' in session:
+        del session['user_id']
+        flash("Logout successful!") 
+    return redirect("/login")
+
 
 @app.route('/users')
 def user_list():
@@ -52,6 +65,21 @@ def user_list():
 
     users = User.query.all()
     return render_template("user_list.html", users=users)
+
+@app.route('/users/<int:user_id>')
+def user_info(user_id):
+    """Display information about a specific user"""
+
+    user_info = User.query.filter_by(user_id=user_id).one()
+    rating_list = sorted(user_info.ratings) #sorting by memory space! fun!
+    return render_template("user_info.html", user_info=user_info, rating_list=rating_list)
+
+@app.route('/movies')
+def movies():
+    """A list of all the movies"""
+
+    movies = Movie.query.order_by('title').all()
+    return render_template("movie_list.html", movies=movies)
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point

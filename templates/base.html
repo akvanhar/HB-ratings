@@ -5,6 +5,18 @@
 </head>
 
 <body>
+    {% if 'user_id' in session %}
+        <form action='/logbutton'>
+            <input type='submit' name='logout' value='Logout'>
+        </form>
+    {% else %}
+        <form action='/logbutton'>
+            <input type='submit' name='logout' value='Login'>
+        </form>
+    {% endif %}
+
+
+
   Ratings
   <hr>
 
