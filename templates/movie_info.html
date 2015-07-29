@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+    
+    <h3>{{ movie_info.title }}:</h3>
+    <br>
+    <ul>
+        <li>Movie id: {{ movie_info.movie_id }}</li>
+        <li>Year released: {{ movie_info.released_at }}</li>
+        { SOMETHING IN JINJA}
+
+        <form action="/rate_movie/{{ movie_info.movie_id }}">
+            <label>Rate this movie: 
+                <input type="radio" name="score" value="1">1
+                <input type="radio" name="score" value="2">2
+                <input type="radio" name="score" value="3">3
+                <input type="radio" name="score" value="4">4
+                <input type="radio" name="score" value="5">5
+            </label>
+            <input type="submit" value="Rate">
+        </form>
+        {SOMETHING END}
+
+        <li>Ratings: 
+        <table>
+            <thead>
+                <tr>
+                    <th>User Id</th>
+                    <th>Score</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for rating in rating_list %}
+                    <tr>
+                        <td>{{rating.user_id}}</td>
+                        <td>{{rating.score}}</td>                       
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </li>
+
+    </ul>
+{% endblock %}

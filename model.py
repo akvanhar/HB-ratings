@@ -65,7 +65,24 @@ class Rating(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<Rating rating_id=%s movie_id=%s user_id=%s>" % (self.rating_id, self.movie_id, self.user_id)
+        return "<Rating rating_id=%s movie_id=%s user_id=%s>" % (self.rating_id, 
+                                                                 self.movie_id, 
+                                                                 self.user_id)
+
+    @classmethod
+    def add_rating(cls, movie_id, user_id, score):
+        """Insert a new rating into the ratings table"""
+        rating = cls(movie_id='movie_id', user_id='user_id', score='score')
+        db.session.add(rating)
+        db.session.commit()
+     
+        
+
+
+    def update_rating(self):
+        """Update a rating in the ratings table"""
+
+  
 ##############################################################################
 # Helper functions
 

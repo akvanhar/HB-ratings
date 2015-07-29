@@ -81,6 +81,29 @@ def movies():
     movies = Movie.query.order_by('title').all()
     return render_template("movie_list.html", movies=movies)
 
+@app.route('/movies/<int:movie_id>')
+def movie_info(movie_id):
+    """Display information about a specific movie"""
+
+    movie_info = Movie.query.filter_by(movie_id=movie_id).one()
+    rating_list = movie_info.ratings
+    return render_template("movie_info.html", movie_info=movie_info, rating_list=rating_list)
+
+@app.route('/rate_movie/<int:movie_id>')
+def rating_info(movie_id):
+    """Update or insert user rating into db and reload the movie info page"""
+
+    score = request.args.get("score")
+    user_id = session['user_id']
+    print 'user_id:', user_id
+
+    Rating.add_rating(movie_id, user_id, score)
+     
+
+    return redirect('/movies/' + str(movie_id))
+
+
+
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
     # that we invoke the DebugToolbarExtension
