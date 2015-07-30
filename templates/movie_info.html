@@ -7,7 +7,11 @@
         <li>Movie id: {{ movie_info.movie_id }}</li>
         <li>Year released: {{ movie_info.released_at }}</li>
         {% if 'user_id' in session %}
-
+            <li>Average rating {{ average }}</li>
+            {% if prediction %}
+                <li>We predict you will rate this movie {{ prediction }}.</li>
+            {% endif %}
+            <h1 style='color: red'>THE EYE SAYS: {{ beratement }}</h1>
             <form action="/rate_movie/{{ movie_info.movie_id }}" method='post'>
                 <label>Rate this movie: (I hate it!)
                     <input type="radio" name="score" value="1">1

@@ -85,9 +85,77 @@ def movies():
 def movie_info(movie_id):
     """Display information about a specific movie"""
 
-    movie_info = Movie.query.filter_by(movie_id=movie_id).one()
+    BERATEMENT_MESSAGES = [
+        "Yeah. I suppose you're taste isn't so bad. I guess. Blah.",
+        "What were you thinking?? That's how you rated it? Seriously??!",
+        "Good grief! You have awful taste in moves.",
+        "That movie is great. For a clown to watch. Idiot.",
+        "Barf."
+        ]
+
+    movie_info = Movie.query.get(movie_id)
     rating_list = movie_info.ratings
-    return render_template("movie_info.html", movie_info=movie_info, rating_list=rating_list)
+    user_id = session.get('user_id')
+
+    if user_id:
+        user_rating = Rating.query.filter_by(
+                        movie_id=movie_id, user_id=user_id).first()
+    else:
+        user_rating = None
+
+
+    #Get average rating of movie
+
+    rating_scores = [r.score for r in rating_list]
+    avg_rating = float(sum(rating_scores)/len(rating_scores))
+
+    prediction = None
+
+    #Prediciton code: only if the user hasn't rated it yet and a user is logged in
+    if (not user_rating) and user_id:
+        user = User.query.get(user_id)
+        if user:
+            prediction = user.predict_rating(movie_info)
+
+    if prediction:
+        #User hasn't scored; use our prediction if we made one
+        effective_rating = prediction
+    elif user_rating:
+        #User has already scored for real; use that rating
+        effective_rating = user_rating.score
+    else:
+        #User hasn't scored, we couldn't get a prediction
+        effective_rating = None
+
+    #Get the eye's rating, either by prediction or using real rating
+    the_eye = User.query.get(946)
+    eye_rating = Rating.query.filter_by(
+                                        user_id=the_eye.user_id,
+                                        movie_id=movie_info.movie_id).first()
+
+    if eye_rating is None:
+        eye_rating = the_eye.predict_rating(movie_info)
+
+    else:
+        eye_rating = eye_rating.score
+
+    if eye_rating and effective_rating:
+        difference = abs(eye_rating - effective_rating)
+    else:
+        #Can't get an eye rating. We skip difference.
+        difference = None
+
+    if difference is not None:
+        beratement = BERATEMENT_MESSAGES[int(difference)]
+    else:
+        beratement = "You get a pass. This time."
+   
+    return render_template("movie_info.html", 
+                            movie_info=movie_info, 
+                            rating_list=rating_list,
+                            average=avg_rating,
+                            prediction=prediction,
+                            beratement=beratement)
 
 @app.route('/rate_movie/<int:movie_id>', methods=['POST'])
 def rating_info(movie_id):

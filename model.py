@@ -52,18 +52,24 @@ class User(db.Model):
         """Predict user's rating of a movie"""
 
         other_ratings = movie.ratings
-        other_users = [r.user for r in other_ratings]
 
         similarities = [
-        (self.similarity(other_user), other_user.user_id)
-        for other_user in other_users
+        (self.similarity(r.user), r)
+        for r in other_ratings
         ]
 
-        sim, best_match_id = max(similarities)
+        similarities.sort(reverse=True)
 
-        for rating in other_ratings:
-            if rating.user_id == best_match_id:
-                return rating.score * sim
+        similarities = [(sim, r) for sim, r in similarities if sim > 0]
+
+        if not similarities:
+            return None
+
+        numerator = sum([r.score * sim for sim, r in similarities])
+        denominator = sum([sim for sim, r in similarities])
+
+        return numerator/denominator
+        
 class Movie(db.Model):
     """Movies to be rated"""
 
