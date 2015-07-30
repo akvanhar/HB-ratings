@@ -1,6 +1,7 @@
 """Models and database functions for Ratings project."""
 
 from flask_sqlalchemy import SQLAlchemy
+import correlation
 
 # This is the connection to the SQLite database; we're getting this through
 # the Flask-SQLAlchemy helper library. On this, we can find the `session`
@@ -72,15 +73,16 @@ class Rating(db.Model):
     @classmethod
     def add_rating(cls, movie_id, user_id, score):
         """Insert a new rating into the ratings table"""
-        rating = cls(movie_id='movie_id', user_id='user_id', score='score')
+        rating = cls(movie_id=movie_id, user_id=user_id, score=score)
         db.session.add(rating)
         db.session.commit()
-     
-        
 
-
-    def update_rating(self):
+    def update_rating(self, movie_id, user_id, score):
         """Update a rating in the ratings table"""
+        this_rating = Rating.query.filter_by(movie_id = movie_id,
+                                             user_id = user_id).first()
+        this_rating.score = score
+        db.session.commit()
 
   
 ##############################################################################

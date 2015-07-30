@@ -24,21 +24,24 @@ def load_movies():
     for line in movie_file:
         line = line.rstrip()
         movie_info = line.split("|")
+        #deal with the unknown move at movie_id 267
         if movie_info[1] == "unknown":
-            continue
+            released_at = datetime.strptime("1-Jan-1900", "%d-%b-%Y")
+            imdb_url = "unknown"
         else:
-            movie_id = movie_info[0]
-            title = movie_info[1][:-6]
-            title = title.decode("latin-1")
-            title = title.rstrip()
             date = movie_info[2]
             released_at = datetime.strptime(date, "%d-%b-%Y")
             imdb_url = movie_info[4]
-            the_movie = Movie(movie_id=movie_id, 
-                              title=title, 
-                              released_at=released_at, 
-                              imdb_url=imdb_url)
-            db.session.add(the_movie)
+        
+        movie_id = movie_info[0]
+        title = movie_info[1][:-6]
+        title = title.decode("latin-1")
+        title = title.rstrip()
+        the_movie = Movie(movie_id=movie_id, 
+                          title=title, 
+                          released_at=released_at, 
+                          imdb_url=imdb_url)
+        db.session.add(the_movie)
     db.session.commit()
 
 def load_ratings():
@@ -47,6 +50,7 @@ def load_ratings():
     for i, line in enumerate(ratings_file):
         line = line.rstrip()
         user_id, movie_id, score, timestamp = line.split("\t")
+
         the_rating = Rating(movie_id=movie_id, 
                             user_id=user_id, 
                             score=score)
@@ -59,8 +63,8 @@ def load_ratings():
 if __name__ == "__main__":
     connect_to_db(app)
 
-    load_users()
-    # load_movies()
+    # load_users()
+    load_movies()
     # load_ratings()
 
 

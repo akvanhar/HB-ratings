@@ -6,15 +6,25 @@
 
 <body>
     {% if 'user_id' in session %}
-        <form action='/logbutton'>
+        <form action='/logbutton' style='display: inline-block'>
             <input type='submit' name='logout' value='Logout'>
         </form>
     {% else %}
-        <form action='/logbutton'>
+        <form action='/logbutton' style='display: inline-block'>
             <input type='submit' name='logout' value='Login'>
         </form>
     {% endif %}
+      <form action='/' style='display: inline-block'>
+        <input type='submit' value='Home' style='display: inline-block'>
+      </form>
 
+      <form action='/movies' style='display: inline-block'>
+        <input type='submit' value='Movies'>
+      </form>
+
+      <form action='/users' style='display: inline-block'>
+        <input type='submit' value='Users'>
+      </form>
 
 
   Ratings

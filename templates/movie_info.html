@@ -6,19 +6,20 @@
     <ul>
         <li>Movie id: {{ movie_info.movie_id }}</li>
         <li>Year released: {{ movie_info.released_at }}</li>
-        { SOMETHING IN JINJA}
+        {% if 'user_id' in session %}
 
-        <form action="/rate_movie/{{ movie_info.movie_id }}">
-            <label>Rate this movie: 
-                <input type="radio" name="score" value="1">1
-                <input type="radio" name="score" value="2">2
-                <input type="radio" name="score" value="3">3
-                <input type="radio" name="score" value="4">4
-                <input type="radio" name="score" value="5">5
-            </label>
-            <input type="submit" value="Rate">
-        </form>
-        {SOMETHING END}
+            <form action="/rate_movie/{{ movie_info.movie_id }}" method='post'>
+                <label>Rate this movie: (I hate it!)
+                    <input type="radio" name="score" value="1">1
+                    <input type="radio" name="score" value="2">2
+                    <input type="radio" name="score" value="3">3
+                    <input type="radio" name="score" value="4">4
+                    <input type="radio" name="score" value="5">5
+                    (I love it!)
+                </label>
+                <input type="submit" value="Rate">
+            </form>
+        {% endif %}
 
         <li>Ratings: 
         <table>

@@ -89,16 +89,21 @@ def movie_info(movie_id):
     rating_list = movie_info.ratings
     return render_template("movie_info.html", movie_info=movie_info, rating_list=rating_list)
 
-@app.route('/rate_movie/<int:movie_id>')
+@app.route('/rate_movie/<int:movie_id>', methods=['POST'])
 def rating_info(movie_id):
     """Update or insert user rating into db and reload the movie info page"""
 
-    score = request.args.get("score")
+    score = request.form.get("score")
     user_id = session['user_id']
-    print 'user_id:', user_id
+    
+    rating_exists = Rating.query.filter_by(user_id = user_id,
+                                           movie_id = movie_id).first()
 
-    Rating.add_rating(movie_id, user_id, score)
-     
+    #if the rating exists, update, otherwise add it to the database.
+    if rating_exists:
+        rating_exists.update_rating(movie_id, user_id, score)
+    else:
+        Rating.add_rating(movie_id, user_id, score)
 
     return redirect('/movies/' + str(movie_id))
 
