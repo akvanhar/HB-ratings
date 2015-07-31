@@ -1,35 +1,60 @@
 <!doctype html>
 <html>
 <head>
+
+      <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
   <title>Ratings</title>
+  <style>
+    html { 
+    background: url("http://www.planwallpaper.com/static/images/colorful-triangles-background_yB0qTG6.jpg") no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    }
+    </style>
+
 </head>
 
 <body>
-    {% if 'user_id' in session %}
-        <form action='/logbutton' style='display: inline-block'>
-            <input type='submit' name='logout' value='Logout'>
-        </form>
-    {% else %}
-        <form action='/logbutton' style='display: inline-block'>
-            <input type='submit' name='logout' value='Login'>
-        </form>
-    {% endif %}
-      <form action='/' style='display: inline-block'>
-        <input type='submit' value='Home' style='display: inline-block'>
-      </form>
-
-      <form action='/movies' style='display: inline-block'>
-        <input type='submit' value='Movies'>
-      </form>
-
-      <form action='/users' style='display: inline-block'>
-        <input type='submit' value='Users'>
-      </form>
-
-
-  Ratings
-  <hr>
-
+  <nav class="navbar navbar-default">
+    <div class='container-fluid'>
+      <div class='row'>
+        
+        <div class="col-xs-1">
+          <a class="btn btn-default" href="/" role="button">Home</a>
+        </div>
+        <div class="col-xs-1">
+          <a class="btn btn-default" href="/movies" role="button">Movies</a>
+        </div>
+        <div class="col-xs-1">
+          <a class="btn btn-default" href="/users" role="button">Users</a>
+        </div>
+        
+        {% if 'user_id' in session %}
+          <div class="nav navbar-nav navbar-right">
+            <div class="col-xs-1">
+              <a class="btn btn-default" href="/logbutton" role="button">Logout</a>
+            </div>
+          </div>
+        {% else %}
+          <div class="nav navbar-nav navbar-right">
+            <div class="col-xs-1">
+              <a class="btn btn-default" href="/logbutton" role="button">Login</a>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
   {% block content %} put your content here {% endblock %}
 
 </body>

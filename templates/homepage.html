@@ -1,15 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Ratings</h1>
+<div class='container'>
+    <div class='row'>
+        <div class='col-xs-12 text-center'>
+            <h1>Ratings</h1>
+        </div>
+    </div>
 
-<h2>Movies</h2>
-<p><a href='/movies'>View all movies</a></p>
-
-<h2>Users</h2>
-<p><a href='/users'>View all users</a></p>
+    <div class='row'>
+        <div class='col-xs-12 col-md-6'>
+            <h2>Movies</h2>
+            <p><a href='/movies'>View all movies</a></p>
+        </div>
+        <div class='col-xs-12 col-md-6'>
+            <h2>Users</h2>
+            <p><a href='/users'>View all users</a></p>
+        </div>
+    </div>
 
 {% for message in get_flashed_messages() %}
     {{message}}
 {% endfor %}
-
+</div>
 {% endblock %}
