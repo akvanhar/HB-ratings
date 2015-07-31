@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+    <h3>To create an account, please fill in the following information</h3>
+    <br>
+    <form action='/signup_portal', method='post'>
+        <label>E-mail: <input type='email' name='email'></label>
+        <br>
+        <label>Password: <input type='password' name='password'></label>
+        <br>
+        <label>Age: <input type='number' name='age'></label>
+        <br>
+        <label>Zip Code: <input type='zipcode' name='zipcode'></label>
+        <br>
+        <input type='submit' value='Sign Up'>
+    </form>
+
+
+
+
+
+{% endblock %}

@@ -54,22 +54,27 @@ class User(db.Model):
         other_ratings = movie.ratings
 
         similarities = [
-        (self.similarity(r.user), r)
+        (self.similarity(r.user), r.score)
         for r in other_ratings
         ]
-
-        similarities.sort(reverse=True)
 
         similarities = [(sim, r) for sim, r in similarities if sim > 0]
 
         if not similarities:
             return None
 
-        numerator = sum([r.score * sim for sim, r in similarities])
+        numerator = sum([r * sim for sim, r in similarities])
         denominator = sum([sim for sim, r in similarities])
 
         return numerator/denominator
-        
+
+    @classmethod
+    def add_user(cls, email, password, age, zipcode):
+        """Insert a new rating into the ratings table"""
+        user = cls(email=email, password=password, age=age, zipcode=zipcode)
+        db.session.add(user)
+        db.session.commit()
+
 class Movie(db.Model):
     """Movies to be rated"""
 

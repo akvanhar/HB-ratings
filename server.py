@@ -45,10 +45,6 @@ def login_portal():
     else:
         flash('Login NOT successful!')
         return redirect('/')
-        #When we need to authenticate, we'll have to fix this
-        #redirect to sign up page
-        #have sign up page add user to database
-        #then redirect back to login page
 
 @app.route('/logbutton')
 def logbutton():
@@ -58,6 +54,23 @@ def logbutton():
         flash("Logout successful!") 
     return redirect("/login")
 
+@app.route('/signup')
+def signup():
+    """Allow a user to sign up and add them to the database"""
+    return render_template('signup.html')
+
+@app.route('/signup_portal', methods=['POST'])
+def signup_portal():
+    """Create new user and add the user to the database"""
+    email = request.form.get('email')
+    password = request.form.get('password')
+    age = request.form.get('age')
+    zipcode = request.form.get('zipcode')
+
+
+    User.add_user(email, password, age, zipcode)
+
+    return redirect("/login")
 
 @app.route('/users')
 def user_list():
@@ -180,7 +193,7 @@ def rating_info(movie_id):
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
     # that we invoke the DebugToolbarExtension
-    app.debug = True
+    app.debug = False
 
     connect_to_db(app)
 
